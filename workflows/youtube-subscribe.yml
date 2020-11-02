@@ -1,0 +1,23 @@
+name: Send a telegram message when my subscribed Youtube channel update
+on:
+  youtube:
+    channel_id:
+      - UCMUnInmOkrWN4gof9KlhNmQ #老高與小茉 Mr & Mrs Gao
+      - UCsBP1dmKYfcorJ17kfOUTvg #波特王 Potter King 
+jobs:
+  telegram:
+    name: Send a telegram message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send a telegram message
+        uses: appleboy/telegram-action@v0.1.0
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          photo:  ${{on.youtube.outputs.thumbnail.url}}
+          message: |
+            Youtube 频道 *${{on.youtube.outputs.author}}* 更新啦！
+            *[${{on.youtube.outputs.title}}](${{on.youtube.outputs.link}})*
+            
+            ${{on.youtube.outputs.description}}
+          format: markdown
